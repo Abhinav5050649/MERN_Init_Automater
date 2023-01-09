@@ -5,3 +5,5 @@ This is a simple powershell script to automate the initialisation of a basic MER
 ## System Requirements
 
 Your system should have "npm" installed in it!
+
+### Status --> Work in Progress!!!
