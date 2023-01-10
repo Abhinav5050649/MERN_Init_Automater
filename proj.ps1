@@ -6,27 +6,47 @@ function isNPMInstalledOrNot()
         Read-Host $answer
     }while($answer -eq "Y" -or $answer -eq "N")
 
-    return $answer
+    if ($answer -like "Y"){
+        main
+    }else{
+        Write-Host "Please install NPM first!!!"
+    }
 }
 
 function getBackendDependencies()
 {
-
+    npm i -D nodemon
+    npm i express express-handlebars mongoose jsonwebtoken cookie-parser dotenv bcrypt 
 }
 
 function getFrontendDependecies()
 {
+    npm i axios react-router-dom
 
+    $choice = ""
+
+    Write-Host "Do you wish to use Tailwind CSS[Y/N]: "
+    Read-Host $choice
+
+    if ($choice -like "Y")
+    {
+        npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+    }
+    else {
+        npm i react-bootstrap bootstrap
+    }
 }
 
 function creatingServer()
 {
     try{
-
         New-Item server -Itemtype Directory 
         Set-Location server 
         npm init -y 
-        Remove-Item --Force .git 
+        Remove-Item --Recurse --Force .git 
+        cls 
+        getBackendDependencies
+        cls
     } catch {
         Write-Host "Encountered an error!!!"
     }
@@ -37,7 +57,10 @@ function creatingClient()
     try{
         npx create-react-app client  
         Set-Location client 
-        Remove-Item --Force .git
+        Remove-Item --Recurse --Force .git
+        cls 
+        getFrontendDependecies
+        cls 
     } catch {
         Write-Host "Encountered an error!!!"
     }
@@ -46,17 +69,13 @@ function creatingMainFolder([str]$folderName)
 {
     New-Item $folderName -ItemType Directory
     Set-Location $folderName
-    
-    $npmStatus = isNPMInstalledOrNot
 
-    if ($npmStatus -like "Y"){
-        creatingServer
-        Set-Location .. 
-        creatingClient
-        Set-Location ..
-    }else {
-        Write-Host "***** Please install NPM before running this script! *****"        
-    }
+    creatingServer
+    Set-Location .. 
+    creatingClient
+    Set-Location ..
+
+    Write-Host "***** Operations successful! *****"
 }
 
 function startProcess()
@@ -70,6 +89,7 @@ function startProcess()
 
 
 function main(){
+
     Write-Host "********* Welcome to the MERN Initialisation Automator *********"
     Write-Host "**** This project automates the initialisation of a MERN Project ****"
     $choice = 0
@@ -87,3 +107,5 @@ function main(){
     while (!($choice -eq 0))
 
 }
+
+isNPMInstalledOrNot
