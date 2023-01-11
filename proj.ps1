@@ -80,7 +80,7 @@ function creatingMainFolder([str]$folderName)
 
 function startProcess()
 {
-    Write-Host "Enter Name of your MERN Project Folder: "
+    Write-Host "Enter Name of your MERN Project Folder(or Absolute Path of Folder): "
     $nameOfProjectFolder = ""
     Read-Host $nameOfProjectFolder
 
