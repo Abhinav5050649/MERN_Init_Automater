@@ -1,10 +1,17 @@
 function isNPMInstalledOrNot()
 {
+    $val = $false
     $answer = ""
     do{
         Write-Host "***** Is NPM installed on your system? Type[Y/N]: *****"
         Read-Host $answer
-    }while($answer -eq "Y" -or $answer -eq "N")
+
+        if ($answer -like "Y" -or $answer -like "N")
+        {
+            $val = $true
+        }
+
+    }while($val -eq $false)
 
     if ($answer -like "Y"){
         main
