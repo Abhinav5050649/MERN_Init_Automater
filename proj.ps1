@@ -15,25 +15,33 @@ function isNPMInstalledOrNot()
 
 function getBackendDependencies()
 {
-    npm i -D nodemon
-    npm i express express-handlebars mongoose jsonwebtoken cookie-parser dotenv bcrypt 
+    try{
+        npm i -D nodemon
+        npm i express express-handlebars mongoose jsonwebtoken cookie-parser dotenv bcrypt 
+    } catch {
+        Write-Host "*** Error encountered while getting Backend Dependencies!!! ***"
+    }
 }
 
 function getFrontendDependecies()
 {
-    npm i axios react-router-dom
+    try{
+        npm i axios react-router-dom
 
-    $choice = ""
+        $choice = ""
 
-    Write-Host "Do you wish to use Tailwind CSS[Y/N]: "
-    Read-Host $choice
+        Write-Host "Do you wish to use Tailwind CSS[Y/N]: "
+        Read-Host $choice
 
-    if ($choice -like "Y")
-    {
-        npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
-    }
-    else {
-        npm i react-bootstrap bootstrap
+        if ($choice -like "Y")
+        {
+            npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+        }
+        else {
+            npm i react-bootstrap bootstrap
+        }
+    } catch {
+        Write-Host "*** Error encountered while getting frontend dependencies!!! ***"
     }
 }
 
@@ -48,7 +56,7 @@ function creatingServer()
         getBackendDependencies
         cls
     } catch {
-        Write-Host "Encountered an error!!!"
+        Write-Host "*** Encountered an error while creating server folder!!! ***"
     }
 }
 
@@ -62,49 +70,61 @@ function creatingClient()
         getFrontendDependecies
         cls 
     } catch {
-        Write-Host "Encountered an error!!!"
+        Write-Host "*** Encountered an error while creating client folder!!! ***"
     }
 }
 function creatingMainFolder([str]$folderName)
 {
     New-Item $folderName -ItemType Directory
     Set-Location $folderName
+    try {
+        creatingServer
+        Set-Location .. 
+        creatingClient
+        Set-Location ..
+        
+        Write-Host "***** Operations successful! *****"
+    }
+    catch {
+        Write-Host "*** Error encountered while creatingMainFolder!!! ***"
+    }
 
-    creatingServer
-    Set-Location .. 
-    creatingClient
-    Set-Location ..
-
-    Write-Host "***** Operations successful! *****"
 }
 
 function startProcess()
 {
-    Write-Host "Enter Name of your MERN Project Folder(or Absolute Path of Folder): "
-    $nameOfProjectFolder = ""
-    Read-Host $nameOfProjectFolder
-
-    creatingMainFolder($nameOfProjectFolder)
+    try{
+        Write-Host "Enter Name of your MERN Project Folder(or Absolute Path of Folder): "
+        $nameOfProjectFolder = ""
+        Read-Host $nameOfProjectFolder
+        creatingMainFolder($nameOfProjectFolder)
+    }catch{
+        Write-Host "*** Error encountered at startProcess !***"
+    }
 }
 
 
 function main(){
 
-    Write-Host "********* Welcome to the MERN Initialisation Automator *********"
-    Write-Host "**** This project automates the initialisation of a MERN Project ****"
-    $choice = 0
-    
-    do
-    {
-        Write-Host "Press 1 to begin OR Press 0 to exit!"
-        Read-Host $choice
-    
-        if ($choice -eq 1)
+    try{
+        Write-Host "********* Welcome to the MERN Initialisation Automator *********"
+        Write-Host "**** This project automates the initialisation of a MERN Project ****"
+        $choice = 0
+        
+        do
         {
-            startProcess
+            Write-Host "Press 1 to begin OR Press 0 to exit!"
+            Read-Host $choice
+        
+            if ($choice -eq 1)
+            {
+                startProcess
+            }
         }
+        while (!($choice -eq 0))
+    } catch {
+        Write-Host "*** Error encountered while running Main Function!!! ***"
     }
-    while (!($choice -eq 0))
 
 }
 
