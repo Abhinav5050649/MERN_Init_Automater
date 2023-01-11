@@ -110,6 +110,14 @@ function startProcess()
     }
 }
 
+function endMessage(){
+    try{
+        Write-Host "***** Your MERN Project has been initialised *****"
+        Write-Host "***** Thank you for using the Script :)!!! *****"
+    }catch{
+        Write-Host "*** Error encountered while displaying end message!!! ***"
+    }
+}
 
 function main(){
 
@@ -129,6 +137,9 @@ function main(){
             }
         }
         while (!($choice -eq 0))
+
+        endMessage 
+
     } catch {
         Write-Host "*** Error encountered while running Main Function!!! ***"
     }
